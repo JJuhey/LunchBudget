@@ -1,7 +1,8 @@
 import React from 'react';
 import {
-  View, Text, Button, StyleSheet
+  View, Text, StyleSheet
 } from 'react-native';
+import { Button } from 'react-native-paper'
 
 const style = StyleSheet.create({
   container: {
@@ -11,16 +12,18 @@ const style = StyleSheet.create({
   }
 })
 
-const HomeScreen: React.FC = ({ navigation }) => {
+interface PropsType {
+  navigation: any;
+}
 
-
+const HomeScreen: React.FC<PropsType> = ({ navigation }: PropsType) => {
   return (
     <View style={style.container}>
       <Text>Home Screen</Text>
       <Button
-        title='Go to Summary'
+        mode='contained'
         onPress={() => navigation.navigate('Summary')}
-      />
+      >Go to Summary</Button>
     </View>
   )
 }

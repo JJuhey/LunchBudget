@@ -15,7 +15,11 @@ const style = StyleSheet.create({
   }
 })
 
-const SummaryScreen: React.FC<PropsType> = (props: PropsType) => {
+interface PropsType {
+  navigation: any;
+}
+
+const SummaryScreen: React.FC<PropsType> = ({ navigation }: PropsType) => {
 
 
   return (
