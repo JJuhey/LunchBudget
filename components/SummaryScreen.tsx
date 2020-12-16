@@ -30,4 +30,3 @@ const SummaryScreen: React.FC<PropsType> = ({ navigation }: PropsType) => {
 }
 
 export default SummaryScreen
-
