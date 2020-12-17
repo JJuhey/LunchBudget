@@ -28,45 +28,55 @@ interface PropsType {
   navigation: any;
   database: SQLite.SQLiteDatabase;
   summary: SummaryType;
+  onChangeSummary(partial: Partial<SummaryType>): void;
 }
 
 const HomeScreen: React.FC<PropsType> = ({
   navigation,
   database,
   summary,
+  onChangeSummary,
 }: PropsType) => {
   const [details, setDetails] = React.useState<DetailType[]>([])
-  const [month, setMonth] = React.useState(`${new Date().getFullYear()}.${new Date().getMonth()}`) // TODO
+  const [month, setMonth] = React.useState(`${new Date().getFullYear()}.${new Date().getMonth()+1}`) // TODO
+  const [selectedDetail, setSelectedDetail] = React.useState<DetailType | undefined>(undefined)
 
   const fetchDetails = () => {
     database.transaction((tx) => {
-      let selectQuery = `SELECT * FROM DETAIL WHERE SUMMARY_ID=${summary.id} ORDER BY ID DESC;`  
-      tx.executeSql(selectQuery, [], (tx, result) => {
-        const rows = result.rows;
-        let detailList = []
-        let tempRemain = summary.remainMoney
-  
-        for(let i=0; i<rows.length; i++) {
-          const detail: DetailType = {
-            id: rows.item(i).ID,
-            date: rows.item(i).DATE,
-            menu: rows.item(i).MENU,
-            amount: rows.item(i).MONEY,
-            remain: tempRemain,
-            summaryId: rows.item(i).SUMMARY_ID,
+      tx.executeSql(
+        'SELECT * FROM DETAIL WHERE SUMMARY_ID=? ORDER BY ID DESC',
+        [summary.id], (tx, result) => {
+          const rows = result.rows;
+          let detailList = []
+          let tempRemain = summary.remainMoney
+    
+          for(let i=0; i<rows.length; i++) {
+            const detail: DetailType = {
+              id: rows.item(i).ID,
+              date: rows.item(i).DATE,
+              menu: rows.item(i).MENU,
+              amount: rows.item(i).MONEY,
+              remain: tempRemain,
+              summaryId: rows.item(i).SUMMARY_ID,
+            }
+            tempRemain += rows.item(i).MONEY
+            detailList.push(detail)
           }
-          tempRemain += rows.item(i).MONEY
-          detailList.push(detail)
-        }
 
-        setDetails(detailList)
-      }, err => console.error(err))
-    })
+          setDetails(detailList)
+        }, err => console.error(err)) // end select details
+    }, err => console.error(err), () => console.log('Successful Transaction'))
   }
 
   React.useEffect(() => {
+    // console.log('HomeScreen useEffect...')
     fetchDetails()
-  }, [])
+  }, [summary])
+
+  const onPressDetail = (detailId: number) => {
+    const selected = details.find(detail => detail.id === detailId)
+    setSelectedDetail(selected)
+  }
 
   return (
     <View style={style.container}>
@@ -74,7 +84,13 @@ const HomeScreen: React.FC<PropsType> = ({
         <Text style={style.title}>{month}</Text>
         <Text>남은돈: ${summary.remainMoney} / 예산: ${summary.budget}</Text>
       </View>
-      <View style={style.content}><AddDetailForm/></View>
+      <View style={style.content}>
+        <AddDetailForm
+          database={database}
+          selectedDetail={selectedDetail}
+          summary={summary}
+          onChangeSummary={onChangeSummary}/>
+      </View>
       <DataTable style={style.content}>
         <DataTable.Header>
           <DataTable.Title>Date</DataTable.Title>
@@ -83,7 +99,7 @@ const HomeScreen: React.FC<PropsType> = ({
           <DataTable.Title numeric>Remains</DataTable.Title>
         </DataTable.Header>
           {details.map(data => (
-            <DataTable.Row key={data.id}>
+            <DataTable.Row key={data.id} onPress={() => onPressDetail(data.id)}>
               <DataTable.Cell>{data.date}</DataTable.Cell>
               <DataTable.Cell>{data.menu}</DataTable.Cell>
               <DataTable.Cell numeric>￦ {data.amount}</DataTable.Cell>

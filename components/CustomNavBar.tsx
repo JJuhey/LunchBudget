@@ -20,6 +20,11 @@ const CustomNavBar: React.FC<PropsType> = ({ navigation, previous }: PropsType) 
     closeMenu()
   }
 
+  const onPressSetting = () => {
+    navigation.navigate('Setting')
+    closeMenu()
+  }
+
   return (
     <Appbar.Header>
       { previous? <Appbar.BackAction onPress={navigation.goBack}/> : null }
@@ -33,8 +38,8 @@ const CustomNavBar: React.FC<PropsType> = ({ navigation, previous }: PropsType) 
           }
         >
           <Menu.Item onPress={onPressSummary} title='Summary'/>
-          <Menu.Item onPress={() => console.log('Option 3 was pressed')} title='Option 2'/>
-          <Menu.Item onPress={() => console.log('Option 3 was pressed')} title='Option 3'/>
+          <Menu.Item onPress={onPressSetting} title='Setting'/>
+          <Menu.Item onPress={() => console.log('Option 3 was pressed')} title='Developer'/>
         </Menu>
       ): null}
     </Appbar.Header>

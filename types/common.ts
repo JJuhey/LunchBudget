@@ -15,3 +15,10 @@ export interface SummaryType {
   spendMoney: number;
   remainMoney: number;
 }
+
+export interface SettingType {
+  id: number;
+  userName: string;
+  budgetAmount: number;
+  category: string;
+}

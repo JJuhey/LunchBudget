@@ -19,14 +19,14 @@ interface PropsType {
   navigation: any;
 }
 
-const SummaryScreen: React.FC<PropsType> = ({ navigation }: PropsType) => {
+const SettingScreen: React.FC<PropsType> = ({ navigation }: PropsType) => {
 
 
   return (
     <View style={style.container}>
-      <Text>Summary Screen</Text>
+      <Text>Setting Screen</Text>
     </View>
   )
 }
 
-export default SummaryScreen
+export default SettingScreen
