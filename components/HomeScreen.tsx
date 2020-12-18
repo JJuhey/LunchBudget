@@ -1,18 +1,18 @@
 import React from 'react';
 import SQLite from 'react-native-sqlite-storage'
 import {
-  View, Text, StyleSheet
+  View, Text, StyleSheet,
 } from 'react-native';
-import { Button, DataTable } from 'react-native-paper'
+import { Button, DataTable, Divider } from 'react-native-paper'
 
 import { DetailType, SummaryType } from '../types/common';
 import AddDetailForm from './AddDetailForm';
+import { ScrollView } from 'react-native-gesture-handler';
+import { showComma } from '../common/util';
 
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    // alignItems: 'center',
-    // justifyContent: 'center',
   },
   title: {
     fontSize: 30,
@@ -38,13 +38,13 @@ const HomeScreen: React.FC<PropsType> = ({
   onChangeSummary,
 }: PropsType) => {
   const [details, setDetails] = React.useState<DetailType[]>([])
-  const [month, setMonth] = React.useState(`${new Date().getFullYear()}.${new Date().getMonth()+1}`) // TODO
+  const [month, setMonth] =  React.useState(`${new Date().getFullYear()}.${new Date().getMonth()+1}`) // TODO
   const [selectedDetail, setSelectedDetail] = React.useState<DetailType | undefined>(undefined)
 
   const fetchDetails = () => {
     database.transaction((tx) => {
       tx.executeSql(
-        'SELECT * FROM DETAIL WHERE SUMMARY_ID=? ORDER BY ID DESC',
+        'SELECT * FROM DETAIL WHERE SUMMARY_ID=? ORDER BY DATE DESC',
         [summary.id], (tx, result) => {
           const rows = result.rows;
           let detailList = []
@@ -70,19 +70,26 @@ const HomeScreen: React.FC<PropsType> = ({
 
   React.useEffect(() => {
     // console.log('HomeScreen useEffect...')
+    if (summary.month !== month) {
+      const sumYear = summary.month.substring(0, 4)
+      const sumMonth = summary.month.substring(4, 6)
+      setMonth(`${sumYear}년 ${sumMonth}월`)
+    }
+
+
     fetchDetails()
   }, [summary])
 
   const onPressDetail = (detailId: number) => {
     const selected = details.find(detail => detail.id === detailId)
-    setSelectedDetail(selected)
+    selected && setSelectedDetail(selected)
   }
 
   return (
     <View style={style.container}>
       <View style={style.content}>
         <Text style={style.title}>{month}</Text>
-        <Text>남은돈: ${summary.remainMoney} / 예산: ${summary.budget}</Text>
+        <Text>남은돈: ￦{showComma(summary.remainMoney)} / 예산: ￦{showComma(summary.budget)}</Text>
       </View>
       <View style={style.content}>
         <AddDetailForm
@@ -91,29 +98,37 @@ const HomeScreen: React.FC<PropsType> = ({
           summary={summary}
           onChangeSummary={onChangeSummary}/>
       </View>
-      <DataTable style={style.content}>
-        <DataTable.Header>
-          <DataTable.Title>Date</DataTable.Title>
-          <DataTable.Title>Menu</DataTable.Title>
-          <DataTable.Title numeric>Amount</DataTable.Title>
-          <DataTable.Title numeric>Remains</DataTable.Title>
-        </DataTable.Header>
-          {details.map(data => (
-            <DataTable.Row key={data.id} onPress={() => onPressDetail(data.id)}>
-              <DataTable.Cell>{data.date}</DataTable.Cell>
-              <DataTable.Cell>{data.menu}</DataTable.Cell>
-              <DataTable.Cell numeric>￦ {data.amount}</DataTable.Cell>
-              <DataTable.Cell numeric>￦ {data.remain}</DataTable.Cell>
+      <Divider />
+      <ScrollView>
+        <DataTable style={style.content}>
+          <DataTable.Header>
+            <DataTable.Title>날짜</DataTable.Title>
+            <DataTable.Title>메뉴</DataTable.Title>
+            <DataTable.Title numeric>가격 (원)</DataTable.Title>
+            <DataTable.Title numeric>남은돈 (원)</DataTable.Title>
+          </DataTable.Header>
+            {details.map(data => (
+              <DataTable.Row key={`detail-${data.id}`} onPress={() => onPressDetail(data.id)}>
+                <DataTable.Cell>{data.date}</DataTable.Cell>
+                <DataTable.Cell>{data.menu}</DataTable.Cell>
+                <DataTable.Cell numeric>￦ {showComma(data.amount)}</DataTable.Cell>
+                <DataTable.Cell numeric>￦ {data.remain && showComma(data.remain)}</DataTable.Cell>
+              </DataTable.Row>
+            ))}
+            <DataTable.Row key={`detail-init`} >
+                <DataTable.Cell>-</DataTable.Cell>
+                <DataTable.Cell>Initial Budget</DataTable.Cell>
+                <DataTable.Cell numeric>-</DataTable.Cell>
+                <DataTable.Cell numeric>￦ {showComma(summary.budget)}</DataTable.Cell>
             </DataTable.Row>
-          ))}
-      </DataTable>
-      <View style={style.content}>
-        <Button
-          mode='contained'
-          // onPress={() => navigation.navigate('Summary')}
-          onPress={fetchDetails}
-        >Update List</Button>
-      </View>
+        </DataTable>
+        {/* <View style={style.content}>
+          <Button
+            mode='contained'
+            onPress={fetchDetails}
+          >Load Data</Button>
+        </View> */}
+      </ScrollView>
     </View>
   )
 }

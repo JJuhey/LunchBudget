@@ -1,6 +1,6 @@
 import React from 'react'
 import SQLite from 'react-native-sqlite-storage'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Keyboard, TouchableWithoutFeedback } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
 
 import { DetailType, SummaryType } from '../types/common'
@@ -13,7 +13,7 @@ interface PropsType {
 }
 
 const initialDetail = {
-  date: `${new Date().getMonth()+1}-${new Date().getDate()}`,
+  date: `${new Date().getMonth()+1}/${new Date().getDate()}`,
   menu: '',
   amount: undefined,
 }
@@ -34,8 +34,13 @@ const style = StyleSheet.create({
 const AddDetailForm: React.FC<PropsType> = ({
   database, summary, onChangeSummary, selectedDetail,
 }: PropsType) => {
-  const [text, setText] = React.useState('')
   const [detail, setDetail] = React.useState<Partial<DetailType>>(initialDetail)
+  const [prevMoney, setPrevMoney] = React.useState<number | undefined>(undefined)
+
+  React.useEffect(() => {
+    selectedDetail && setPrevMoney(selectedDetail.amount)
+    selectedDetail && setDetail(selectedDetail)
+  }, [selectedDetail])
 
   const onChangeDetail = (partial: Partial<DetailType>) => {
     setDetail({
@@ -46,6 +51,31 @@ const AddDetailForm: React.FC<PropsType> = ({
 
   const onSubmit = () => {
     if(typeof detail.amount === 'undefined') return
+    if (detail.id) {
+      // update
+      database.transaction((tx) => {
+        tx.executeSql(
+          'UPDATE DETAIL SET DATE=?, MENU=?, MONEY=? WHERE ID=?',
+          [detail.date, detail.menu, detail.amount, detail.id],
+          () => {
+            if(!detail.amount || !prevMoney) return
+            const spendMoney = summary.spendMoney + detail.amount - prevMoney
+            const remainMoney = summary.remainMoney - detail.amount + prevMoney
+
+            // 2. Summary 항목의 쓴돈, 남은돈 업데이트
+            tx.executeSql('UPDATE SUMMARY SET SPEND_MONEY=?, REMAIN_MONEY=? WHERE ID=?',
+            [spendMoney, remainMoney, summary.id],
+            () => {
+              // 3. 현재 Summary 상태 수정, Detail 초기화
+              onChangeSummary({ spendMoney, remainMoney })
+              setDetail(initialDetail)
+              Keyboard.dismiss()
+            }, err => console.error(err)) // End Update Summary
+          }
+        )
+      })
+      return
+    }
     database.transaction((tx) => {
       // 1. Detail 항목 삽입
       tx.executeSql(
@@ -63,6 +93,7 @@ const AddDetailForm: React.FC<PropsType> = ({
             // 3. 현재 Summary 상태 수정, Detail 초기화
             onChangeSummary({ spendMoney, remainMoney })
             setDetail(initialDetail)
+            Keyboard.dismiss()
           }, err => console.error(err)) // End Update Summary
         },
         err => console.error(err)) // End Insert Detail
@@ -70,7 +101,6 @@ const AddDetailForm: React.FC<PropsType> = ({
   }
 
   const onDelete = () => {
-    console.log(detail)
     if (detail.id) {
       // 1. delete
       database.transaction((tx) => {
@@ -98,15 +128,13 @@ const AddDetailForm: React.FC<PropsType> = ({
       console.log('삭제할 내역이 없습니다.')
     }
   }
+
   const onReset = () => {
     setDetail(initialDetail)
   }
 
-  React.useEffect(() => {
-    if(selectedDetail) setDetail(selectedDetail)
-  }, [selectedDetail])
-
   return (
+    <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
     <View style={style.container}>
       <View style={style.inputContainer}>
         <TextInput
@@ -117,12 +145,13 @@ const AddDetailForm: React.FC<PropsType> = ({
         />
         <TextInput
           style={{ width: '25%', margin: 2 }}
-          label="날짜(M-D)"
+          label="날짜(M/D)"
           value={detail.date}
           onChangeText={date => onChangeDetail({ date })}
         />
         <TextInput
           style={{ width: '25%', margin: 2 }}
+          keyboardType='number-pad'
           label="금액(원)"
           value={(typeof detail.amount === 'undefined') ? '' : `${detail.amount}`}
           onChangeText={amount => onChangeDetail({ amount: Number(amount) })}
@@ -147,6 +176,7 @@ const AddDetailForm: React.FC<PropsType> = ({
         >Delete</Button>}
       </View>
     </View>
+    </TouchableWithoutFeedback>
   )
 }
 

@@ -342,9 +342,11 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = P68LB5U66V;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = P68LB5U66V;
 						LastSwiftMigration = 1120;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
@@ -394,22 +396,6 @@
 				454717502588D1DC0037FE70 /* www in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				419EA8F12E694353A37B445A /* AntDesign.ttf in Resources */,
-				0463CF9BCAC44A298929067E /* Entypo.ttf in Resources */,
-				66E9B1EE00314AE89DE7B2B6 /* EvilIcons.ttf in Resources */,
-				5C023850030A47A791F34814 /* Feather.ttf in Resources */,
-				5AB28B914298473C998B19F1 /* FontAwesome.ttf in Resources */,
-				77EB22F96C06453DA17608EE /* FontAwesome5_Brands.ttf in Resources */,
-				8B36CA35D3744BB887815BE5 /* FontAwesome5_Regular.ttf in Resources */,
-				5F53639579AC4CCB8BE3ABB7 /* FontAwesome5_Solid.ttf in Resources */,
-				C7593C398A2C47ADB59971EE /* Fontisto.ttf in Resources */,
-				5CCC43121A54447CBE3DD2EA /* Foundation.ttf in Resources */,
-				8BC592173D074B229D258097 /* Ionicons.ttf in Resources */,
-				812C2F16B6164B0AB25BC212 /* MaterialCommunityIcons.ttf in Resources */,
-				F2FB2017222E4EAAADACBBD3 /* MaterialIcons.ttf in Resources */,
-				8E92078F6F5441068E9FF902 /* Octicons.ttf in Resources */,
-				C39F8B5FCA7B4C17B6C041EB /* SimpleLineIcons.ttf in Resources */,
-				3E71BA3ACAE145D68D18634C /* Zocial.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -743,6 +729,7 @@
 			baseConfigurationReference = 82D1E40531F7AFEFDA46CA70 /* Pods-LunchBudget-LunchBudgetTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = P68LB5U66V;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -768,6 +755,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = P68LB5U66V;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = LunchBudgetTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -790,6 +778,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = P68LB5U66V;
 				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -832,7 +821,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.lubu;
 				PRODUCT_NAME = LunchBudget;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -847,6 +836,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = P68LB5U66V;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_ROOT}/Headers/Public\"",
@@ -888,7 +878,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.lubu;
 				PRODUCT_NAME = LunchBudget;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
