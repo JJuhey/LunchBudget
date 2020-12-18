@@ -39,7 +39,6 @@ const CombinedDarkTheme = {
   }
 }
 
-
 SQLite.DEBUG(true);
 SQLite.enablePromise(false);
 
@@ -97,7 +96,7 @@ const App: React.FC = () => {
 
         // fetch one summary of this month
         const thisMonth = `${new Date().getFullYear()}` + `${new Date().getMonth()+1}` // TODO
-        console.log(`thisMonth: ${thisMonth}`)
+        // console.log(`thisMonth: ${thisMonth}`)
         tx.executeSql('SELECT * FROM SUMMARY WHERE MONTH=?', [thisMonth], (tx, result) => {
           // console.log('Select SUMMARY Query Completed')
           // 생성된 현재달의 summary가 없다면, 다시 생성해준다.

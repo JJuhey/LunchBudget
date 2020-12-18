@@ -110,39 +110,3 @@ const SummaryScreen: React.FC<PropsType> = ({
 }
 
 export default SummaryScreen
-
-
-const dummyData = [
-  {
-    id: 4,
-    settingId: 0,
-    month: '202012',
-    budget: 100000,
-    spendMoney: 100000,
-    remainMoney: 0,
-  },
-  {
-    id: 3,
-    settingId: 0,
-    month: '202011',
-    budget: 100000,
-    spendMoney: 100000,
-    remainMoney: 0,
-  },
-  {
-    id: 2,
-    settingId: 0,
-    month: '202010',
-    budget: 100000,
-    spendMoney: 60000,
-    remainMoney: 40000,
-  },
-  {
-    id: 1,
-    settingId: 0,
-    month: '202009',
-    budget: 100000,
-    spendMoney: 50000,
-    remainMoney: 50000,
-  },
-]

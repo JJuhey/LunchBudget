@@ -117,7 +117,7 @@ const HomeScreen: React.FC<PropsType> = ({
             ))}
             <DataTable.Row key={`detail-init`} >
                 <DataTable.Cell>-</DataTable.Cell>
-                <DataTable.Cell>Initial Budget</DataTable.Cell>
+                <DataTable.Cell>예산</DataTable.Cell>
                 <DataTable.Cell numeric>-</DataTable.Cell>
                 <DataTable.Cell numeric>￦ {showComma(summary.budget)}</DataTable.Cell>
             </DataTable.Row>
@@ -134,41 +134,3 @@ const HomeScreen: React.FC<PropsType> = ({
 }
 
 export default HomeScreen
-
-const dummyData = [
-  {
-    id: 5,
-    date: '10-25',
-    menu: '떡볶이',
-    amount: 10000,
-    remains: 53000,
-  },
-  {
-    id: 4,
-    date: '10-22',
-    menu: '제육볶음',
-    amount: 9000,
-    remains: 63000,
-  },
-  {
-    id: 3,
-    date: '10-21',
-    menu: '떡볶이',
-    amount: 6000,
-    remains: 72000,
-  },
-  {
-    id: 2,
-    date: '10-14',
-    menu: '파스타',
-    amount: 12000,
-    remains: 78000,
-  },
-  {
-    id: 1,
-    date: '10-11',
-    menu: '김치찌개',
-    amount: 10000,
-    remains: 90000,
-  },
-]
