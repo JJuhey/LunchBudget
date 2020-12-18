@@ -71,8 +71,8 @@ const HomeScreen: React.FC<PropsType> = ({
   React.useEffect(() => {
     // console.log('HomeScreen useEffect...')
     if (summary.month !== month) {
-      const sumYear = summary.month.substring(0, 4)
-      const sumMonth = summary.month.substring(4, 6)
+      const sumYear = summary.month.substr(0, 4)
+      const sumMonth = summary.month.substr(4, 2)
       setMonth(`${sumYear}년 ${sumMonth}월`)
     }
 
@@ -116,9 +116,9 @@ const HomeScreen: React.FC<PropsType> = ({
               </DataTable.Row>
             ))}
             <DataTable.Row key={`detail-init`} >
-                <DataTable.Cell>-</DataTable.Cell>
+                <DataTable.Cell> </DataTable.Cell>
                 <DataTable.Cell>예산</DataTable.Cell>
-                <DataTable.Cell numeric>-</DataTable.Cell>
+                <DataTable.Cell numeric> </DataTable.Cell>
                 <DataTable.Cell numeric>￦ {showComma(summary.budget)}</DataTable.Cell>
             </DataTable.Row>
         </DataTable>

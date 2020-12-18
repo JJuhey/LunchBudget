@@ -1,7 +1,8 @@
 import React from 'react'
 import SQLite from 'react-native-sqlite-storage'
-import { View, StyleSheet, Keyboard, TouchableWithoutFeedback } from 'react-native'
+import { View, Text, StyleSheet, Keyboard, TouchableWithoutFeedback, Platform } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
+import DateTimePicker from '@react-native-community/datetimepicker'
 
 import { DetailType, SummaryType } from '../types/common'
 
@@ -36,10 +37,16 @@ const AddDetailForm: React.FC<PropsType> = ({
 }: PropsType) => {
   const [detail, setDetail] = React.useState<Partial<DetailType>>(initialDetail)
   const [prevMoney, setPrevMoney] = React.useState<number | undefined>(undefined)
+  const [showDatePicker, setShowDatePicker] = React.useState<boolean>(true)
+  const [date, setDate] = React.useState<Date>(new Date())
 
   React.useEffect(() => {
-    selectedDetail && setPrevMoney(selectedDetail.amount)
-    selectedDetail && setDetail(selectedDetail)
+    if (selectedDetail) {
+      setPrevMoney(selectedDetail.amount)
+      setDetail(selectedDetail)
+      const selectedDate = new Date(`${summary.month.substr(0, 4)}-${summary.month.substr(4, 2)}-${(selectedDetail) ? selectedDetail.date.split('/')[1] : '1'}`)
+      setDate(selectedDate)
+    }
   }, [selectedDetail])
 
   const onChangeDetail = (partial: Partial<DetailType>) => {
@@ -47,6 +54,15 @@ const AddDetailForm: React.FC<PropsType> = ({
       ...detail,
       ...partial,
     })
+  }
+
+  const onChangeDate = (event: any, selectedDate?: Date) => {
+    const currentDate = selectedDate || date;
+    setShowDatePicker(Platform.OS === 'ios')
+    setDate(currentDate)
+
+    const day = (currentDate.getDate() >= 10) ? `${currentDate.getDate()}` : `0${currentDate.getDate()}`
+    onChangeDetail({date: `${currentDate.getMonth()+1}/${day}`})
   }
 
   const onSubmit = () => {
@@ -131,6 +147,7 @@ const AddDetailForm: React.FC<PropsType> = ({
 
   const onReset = () => {
     setDetail(initialDetail)
+    setDate(new Date())
   }
 
   return (
@@ -138,17 +155,26 @@ const AddDetailForm: React.FC<PropsType> = ({
     <View style={style.container}>
       <View style={style.inputContainer}>
         <TextInput
-          style={{ width: '45%', margin: 2 }}
+          style={{ width: '40%', margin: 2 }}
           label="오늘의 메뉴"
           value={detail.menu}
           onChangeText={menu => onChangeDetail({ menu })}
         />
-        <TextInput
-          style={{ width: '25%', margin: 2 }}
-          label="날짜(M/D)"
-          value={detail.date}
-          onChangeText={date => onChangeDetail({ date })}
-        />
+        <View style={{
+          width: '30%', height: 65,
+          justifyContent: 'center', backgroundColor: '#e0e0e2',
+          padding: 4, marginVertical: 3,
+          borderTopLeftRadius: 5, borderTopRightRadius: 5, borderBottomWidth: 1, borderColor: 'gray',
+        }}>
+          <Text style={{ color: 'dodgerblue' }}>날짜</Text>
+          <DateTimePicker
+            testID='dateTimePicker'
+            value={date}
+            mode='date'
+            display='compact'
+            onChange={onChangeDate}
+          />
+        </View>
         <TextInput
           style={{ width: '25%', margin: 2 }}
           keyboardType='number-pad'

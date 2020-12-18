@@ -3,11 +3,12 @@ import SQLite from 'react-native-sqlite-storage'
 import {
   View, Text, StyleSheet
 } from 'react-native';
-import { Card, Paragraph, Title, Button } from 'react-native-paper';
+import { Card, Paragraph, Title } from 'react-native-paper';
 
-import { SummaryType, SettingType } from '../types/common';
-import UpdateSummaryForm from './UpdateSummaryForm';
+import { SummaryType } from '../types/common';
 import { showComma } from '../common/util';
+
+import UpdateSummaryForm from './UpdateSummaryForm';
 
 const style = StyleSheet.create({
   container: {
@@ -36,7 +37,7 @@ interface PropsType {
 const SummaryScreen: React.FC<PropsType> = ({
   navigation, database, summary, onChangeSummary,
 }: PropsType) => {
-  const [summaryList, setSummaryList] = React.useState<SummaryType[]>(dummyData)
+  const [summaryList, setSummaryList] = React.useState<SummaryType[]>([])
   const [showSummary, setShowSummary] = React.useState<boolean>(false)
 
   const onPressSummary = (summaryId: number) => {

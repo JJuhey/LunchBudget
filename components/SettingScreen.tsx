@@ -1,7 +1,7 @@
 import React from 'react';
 import SQLite from 'react-native-sqlite-storage'
 import {
-  View, Text, StyleSheet
+  View, Text, StyleSheet, TouchableWithoutFeedback, Keyboard
 } from 'react-native';
 import { SettingType } from '../types/common';
 import { Subheading, TextInput, Button } from 'react-native-paper';
@@ -69,6 +69,7 @@ const SettingScreen: React.FC<PropsType> = ({ navigation, database, setting, onC
   }
 
   return (
+    <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
     <View style={style.container}>
       <View style={style.content}>
         <Text style={style.title}>SETTING</Text>
@@ -105,6 +106,7 @@ const SettingScreen: React.FC<PropsType> = ({ navigation, database, setting, onC
         </View>
       </View>
     </View>
+    </TouchableWithoutFeedback>
   )
 }
 
