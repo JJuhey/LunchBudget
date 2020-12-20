@@ -85,6 +85,7 @@ const AddDetailForm: React.FC<PropsType> = ({
               // 3. 현재 Summary 상태 수정, Detail 초기화
               onChangeSummary({ spendMoney, remainMoney })
               setDetail(initialDetail)
+              setDate(new Date())
               Keyboard.dismiss()
             }, err => console.error(err)) // End Update Summary
           }
