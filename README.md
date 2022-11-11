@@ -8,7 +8,7 @@
 * Database: sqlite
 
 ## 실행화면
-<img src={https://user-images.githubusercontent.com/53938072/201223267-6e00133f-9140-4aa4-a6cb-2880d0103f1a.gif} width="300" height="648">
+<img src={https://user-images.githubusercontent.com/53938072/201223267-6e00133f-9140-4aa4-a6cb-2880d0103f1a.gif} />
 
 
 ## 사용기능
