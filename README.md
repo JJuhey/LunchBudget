@@ -8,8 +8,8 @@
 * Database: sqlite
 
 ## 실행화면
-![screencapture](https://user-images.githubusercontent.com/53938072/201223267-6e00133f-9140-4aa4-a6cb-2880d0103f1a.gif)
-<!-- <img src={https://user-images.githubusercontent.com/53938072/201223267-6e00133f-9140-4aa4-a6cb-2880d0103f1a.gif} /> -->
+<!-- ![screencapture](https://user-images.githubusercontent.com/53938072/201223267-6e00133f-9140-4aa4-a6cb-2880d0103f1a.gif) -->
+<img src={https://user-images.githubusercontent.com/53938072/201223267-6e00133f-9140-4aa4-a6cb-2880d0103f1a.gif} width="50%" height="50%/>
 
 ## 사용기능
 * 가계부 메뉴
